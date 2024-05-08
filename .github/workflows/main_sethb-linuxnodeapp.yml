@@ -33,8 +33,9 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
+          npm i yarn
           cd packages/web
-          npm install
+          yarn install
           npm run build --if-present
           npm run test --if-present
 
