@@ -74,7 +74,8 @@ jobs:
           app-name: 'sethb-linuxnodeapp'
           slot-name: 'Production'
           package: .
-
+      
+      # sets startup command/script
       - name: set webapp startup
         run: | 
           az webapp config set --resource-group AppService.Specialist.OSS.Nodejs.Win.1-SethBRG --name sethb-linusnodeapp --startup-file "./package.json"
