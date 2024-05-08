@@ -9,6 +9,11 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: my-app   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: 'my-app-path'      # set this to the path to your web app project, defaults to the repository root
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,8 +26,14 @@ jobs:
         with:
           node-version: '18.x'
 
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_RBAC_CREDENTIALS }}
+
       - name: npm install, build, and test
         run: |
+          npm install
+          cd web/packages
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -54,9 +65,13 @@ jobs:
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'sethb-linuxnodeapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4F20B38E463B4AAAB8D629CA54C65646 }}
           package: .
+    
+    # Azure logout 
+      - name: logout
+        run: |
+          az logout
