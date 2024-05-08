@@ -8,6 +8,7 @@
     ]
   },
   "scripts": {
+    "start": "pm2 serve --no-daemon ./packages/web/build"
     "android": "yarn workspace mobile android",
     "compile": "tsc -b --incremental",
     "ios": "yarn workspace mobile  ios",
